@@ -1,8 +1,10 @@
-export const Header = () => {
+export default function Header() {
   return (
-    <header className="w-full bg-[#3080FF] text-white p-4">
-      <h1 className="text-xl font-bold">글로벌널리지</h1>
-      <p className="text-sm">프론트엔드 개발자 지원자용 실무 과제 - 김다훈</p>
+    <header className="flex justify-between items-center bg-blue-600 p-4 text-white">
+      <h1 className="text-2xl">To-Do List</h1>
+      <button className="bg-white text-blue-600 px-4 py-2 rounded">
+        보드 추가
+      </button>
     </header>
   );
-};
+}
