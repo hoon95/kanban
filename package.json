@@ -11,10 +11,16 @@
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "framer-motion": "^12.4.2",
     "next": "15.1.7",
     "react": "^19.0.0",
-    "zustand": "^5.0.3"
+    "uuidv4": "^6.2.13",
+    "zustand": "^3.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
