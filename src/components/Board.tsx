@@ -9,40 +9,43 @@ import { useTaskStore } from "@/stores/useTaskStore";
 
 export default function Board() {
   const { title, setTitle } = useBoardStore();
-  const { isTaskUpdated, tasks, setIsTaskUpdated, setTasks } = useTaskStore();
+  const { tasks, setTasks } = useTaskStore();
 
-  const handleDragEnd = (event: any) => {};
+  const handleDragEnd = () => {};
+  const handleAddTask = () => {
+    setTasks([...tasks, { id: uuidv4(), text: "할 일" }]);
+  };
 
   return (
-    <div className="bg-gray-100 rounded-md p-4 shadow-md">
+    <div className="bg-gray-100 rounded-md p-4 shadow-md h-[50vh] max-h-[60vh]">
       <input
-        className="w-auto p-2 bg-gray-100 focus:outline-none"
+        className="w-full p-2 bg-gray-100 focus:outline-none"
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="보드 이름을 입력하세요"
+        placeholder="제목을 입력하세요"
       />
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={tasks.map((task) => task.id)}>
-          <div className="mt-4 space-y-2">
-            {tasks.map((task) => (
-              <TaskCard key={task.id} todo={task} />
-            ))}
-          </div>
-        </SortableContext>
-        <button
-          className="w-full mt-4 text-lg teritary-btn"
-          onClick={() => {
-            // setTasks((prevTasks = []) => [
-            //   ...prevTasks,
-            //   { id: uuidv4(), text: "할 일" },
-            // ]);
-            setTasks([{ id: uuidv4(), text: "할 일" }]);
-          }}
+      <div className="h-5/6 overflow-y-scroll">
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          + 할 일 추가
-        </button>
-      </DndContext>
+          <SortableContext items={tasks.map((task) => task.id)}>
+            <div className="mt-4 space-y-2">
+              {tasks.map((task) => (
+                <TaskCard key={task.id} todo={task} />
+              ))}
+            </div>
+          </SortableContext>
+
+          <button
+            className="w-full mt-4 text-lg teritary-btn"
+            onClick={handleAddTask}
+          >
+            + 할 일 추가
+          </button>
+        </DndContext>
+      </div>
     </div>
   );
 }

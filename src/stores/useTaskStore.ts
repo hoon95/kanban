@@ -7,14 +7,11 @@ export const useTaskStore = create<TaskProps>(
     (set) => ({
       isTaskUpdated: false,
       setIsTaskUpdated: (updated: boolean) => set({ isTaskUpdated: updated }),
-      tasks: [
-        { id: "1", text: "할 일" },
-        { id: "2", text: "할 일" },
-      ],
+      tasks: [] as TaskListProps[],
       setTasks: (newTasks: TaskListProps[]) => set({ tasks: newTasks }),
     }),
     {
-      name: "taskStore",
+      name: "taskStorage",
     }
   )
 );
