@@ -1,11 +1,8 @@
-"use client";
-
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTaskStore } from "@/stores/useTaskStore";
-import { useEffect, useState } from "react";
 
 export default function TaskCard({
   todo,

@@ -1,6 +1,6 @@
 "use client";
 
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from "uuid";
 import TaskCard from "@/components/TaskCard";
@@ -11,7 +11,20 @@ export default function Board() {
   const { title, setTitle } = useBoardStore();
   const { tasks, setTasks } = useTaskStore();
 
-  const handleDragEnd = () => {};
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const activeIdx = tasks.map((task) => task.id).indexOf(String(active.id));
+      const overIdx = tasks.map((task) => task.id).indexOf(String(over?.id));
+
+      if (activeIdx !== -1 && overIdx !== -1) {
+        const reOrderedTasks = arrayMove(tasks, activeIdx, overIdx);
+        setTasks(reOrderedTasks);
+      }
+    }
+  };
+
   const handleAddTask = () => {
     setTasks([...tasks, { id: uuidv4(), text: "할 일" }]);
   };

@@ -1,12 +1,14 @@
-export type BoardProps = {
-  title: string;
-};
+import { Active, Over } from "@dnd-kit/core";
 
-export type TaskProps = {
+export interface BoardProps {
+  title: string;
+}
+
+export interface TaskProps {
   id: string;
   text: string;
-};
+}
 
-export type TaskCardProps = {
+export interface TaskCardProps {
   text: string;
-};
+}
