@@ -1,3 +1,5 @@
+"use client";
+
 export default function Header() {
   return (
     <header className="flex justify-between items-center bg-blue-600 p-4 text-white">

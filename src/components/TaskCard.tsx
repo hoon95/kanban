@@ -1,12 +1,25 @@
-type TaskCardProps = {
-  text: string;
-};
+"use client";
 
-export default function TaskCard({ text }: TaskCardProps) {
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+export default function TodoItem({
+  todo,
+}: {
+  todo: { id: string; text: string };
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: todo.id });
+
   return (
-    <div className="bg-white p-4 mb-2 rounded-md shadow-sm">
-      <p>{text}</p>
-      <button className="text-red-500 mt-2">삭제</button>
+    <div
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      {...attributes}
+      {...listeners}
+      className="p-4 bg-white shadow-md rounded-md cursor-grab active:cursor-grabbing"
+    >
+      {todo.text}
     </div>
   );
 }
