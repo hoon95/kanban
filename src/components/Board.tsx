@@ -8,6 +8,8 @@ import { faGripVertical, faTimes } from "@fortawesome/free-solid-svg-icons";
 import TaskCard from "@/components/TaskCard";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 export default function Board({ boardId }: { boardId: string }) {
   const { boards, setBoardTitle, setBoard } = useBoardStore();
@@ -16,10 +18,15 @@ export default function Board({ boardId }: { boardId: string }) {
   const board = boards.find((board) => board.id === boardId);
 
   if (!board) {
-    return;
+    return null;
   }
 
   const boardTasks = tasks[boardId] || [];
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: boardId,
+    });
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -44,6 +51,8 @@ export default function Board({ boardId }: { boardId: string }) {
     const updatedTasks = [...(tasks[boardId] || []), newTask];
 
     setTasks({ boardId, newTasks: updatedTasks });
+
+    console.log(updatedTasks);
   };
 
   const handleChangeTitle = (boardId: string, newTitle: string) => {
@@ -51,14 +60,20 @@ export default function Board({ boardId }: { boardId: string }) {
   };
 
   const handleDeleteBoard = (boardId: string) => {
-    const deleteBoard = boards.filter((board) => board.id === boardId);
-
-    console.log(deleteBoard);
     setBoard("remove", boardId);
   };
 
   return (
-    <div className="bg-gray-100 rounded-md p-4 shadow-md h-[50vh] max-h-[60vh]">
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+      className="bg-gray-100 rounded-md p-4 shadow-md h-[50vh] max-h-[60vh] cursor-grab active:cursor-grabbing"
+    >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
           <FontAwesomeIcon
@@ -97,6 +112,7 @@ export default function Board({ boardId }: { boardId: string }) {
             onClick={() => {
               handleAddTask(boardId);
             }}
+            onPointerDown={(e) => e.stopPropagation()}
           >
             + 할 일 추가
           </button>
