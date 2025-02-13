@@ -16,25 +16,36 @@ export default function Board({ boardId }: { boardId: string }) {
   const board = boards.find((board) => board.id === boardId);
 
   if (!board) {
-    return <div>보드를 찾을 수 없습니다.</div>;
+    return;
   }
+
+  const boardTasks = tasks[boardId] || [];
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const activeIdx = tasks.map((task) => task.id).indexOf(String(active.id));
-      const overIdx = tasks.map((task) => task.id).indexOf(String(over?.id));
+      const activeIdx = boardTasks
+        .map((task) => task.id)
+        .indexOf(String(active.id));
+      const overIdx = boardTasks
+        .map((task) => task.id)
+        .indexOf(String(over?.id));
 
       if (activeIdx !== -1 && overIdx !== -1) {
-        const reOrderedTasks = arrayMove(tasks, activeIdx, overIdx);
-        setTasks(reOrderedTasks);
+        const reOrderedTasks = arrayMove(boardTasks, activeIdx, overIdx);
+        setTasks({ boardId, newTasks: reOrderedTasks });
       }
     }
   };
 
-  const handleAddTask = () => {
-    setTasks([...tasks, { id: uuidv4(), text: "할 일" }]);
+  const handleAddTask = (boardId: string) => {
+    const newTask = { id: uuidv4(), text: "할 일" };
+    const updatedTasks = [...(tasks[boardId] || []), newTask];
+
+    setTasks({ boardId, newTasks: updatedTasks });
+
+    console.log(tasks);
   };
 
   const handleChangeTitle = (boardId: string, newTitle: string) => {
@@ -48,7 +59,7 @@ export default function Board({ boardId }: { boardId: string }) {
         <input
           className="w-full p-2 bg-gray-100 focus:outline-none"
           type="text"
-          value={board?.title}
+          value={board.title}
           onChange={(e) => handleChangeTitle(board.id, e.target.value)}
           placeholder="제목을 입력하세요"
         />
@@ -58,9 +69,9 @@ export default function Board({ boardId }: { boardId: string }) {
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
-          <SortableContext items={tasks.map((task) => task.id)}>
+          <SortableContext items={boardTasks.map((task) => task.id)}>
             <div className="mt-4 space-y-2">
-              {tasks.map((task) => (
+              {boardTasks.map((task) => (
                 <TaskCard key={task.id} todo={task} />
               ))}
             </div>
@@ -68,7 +79,9 @@ export default function Board({ boardId }: { boardId: string }) {
 
           <button
             className="w-full mt-4 text-lg teritary-btn"
-            onClick={handleAddTask}
+            onClick={() => {
+              handleAddTask(boardId);
+            }}
           >
             + 할 일 추가
           </button>

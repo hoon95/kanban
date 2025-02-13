@@ -29,18 +29,22 @@ export default function TaskCard({
   }, [isEditing]);
 
   const handleModifyTask = (
-    id: string,
+    boardId: string,
+    taskId: string,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, text: event.target.value } : task
-      )
+    const updatedTasks = tasks[boardId]?.map((task) =>
+      task.id === taskId ? { ...task, text: event.target.value } : task
     );
+
+    setTasks({
+      ...tasks,
+      [boardId]: updatedTasks || [],
+    });
   };
 
   const handleDeleteTask = (id: string) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    setTasks(tasks.filter((task: { id: string }) => task.id !== id));
   };
 
   return (

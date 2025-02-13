@@ -18,7 +18,7 @@ export default function BoardList() {
         {boards.map((board) => (
           <Board key={board.id} boardId={board.id} />
         ))}
-        <div className="flex">
+        <div>
           <button
             className="flex items-center justify-center flex-col gap-2 w-full text-lg rounded-lg border-2 bg-gray-100 border-gray-200 p-5 text-gray-500"
             onClick={handleAddBoard}

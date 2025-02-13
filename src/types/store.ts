@@ -17,6 +17,6 @@ export interface TaskListProps {
 export interface TaskProps {
   isTaskUpdated: boolean;
   setIsTaskUpdated: (updated: boolean) => void;
-  tasks: TaskListProps[];
-  setTasks: (newTasks: TaskListProps[]) => void;
+  tasks: { [key: string]: TaskListProps[] };
+  setTasks: (params: { boardId: string; newTasks: TaskListProps[] }) => void;
 }
