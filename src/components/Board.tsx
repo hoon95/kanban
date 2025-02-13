@@ -7,9 +7,11 @@ import TaskCard from "@/components/TaskCard";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
 
-export default function Board() {
-  const { title, setTitle } = useBoardStore();
+export default function Board({ boardId }: { boardId: string }) {
+  const { boards, setBoardTitle } = useBoardStore();
   const { tasks, setTasks } = useTaskStore();
+
+  const board = boards.find((board) => board.id === boardId);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -29,13 +31,17 @@ export default function Board() {
     setTasks([...tasks, { id: uuidv4(), text: "할 일" }]);
   };
 
+  const handleChangeTitle = (boardId: string, newTitle: string) => {
+    setBoardTitle(boardId, newTitle);
+  };
+
   return (
     <div className="bg-gray-100 rounded-md p-4 shadow-md h-[50vh] max-h-[60vh]">
       <input
         className="w-full p-2 bg-gray-100 focus:outline-none"
         type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={board?.title}
+        onChange={(e) => handleChangeTitle(board.id, e.target.value)}
         placeholder="제목을 입력하세요"
       />
       <div className="h-5/6 overflow-y-scroll">

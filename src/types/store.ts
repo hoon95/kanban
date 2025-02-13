@@ -1,8 +1,7 @@
 export interface BoardProps {
-  isBoardUpdated: boolean;
-  setIsBoardUpdated: (clicked: boolean) => void;
-  title: string;
-  setTitle: (newTitle: string) => void;
+  boards: string[];
+  setBoardTitle: (boardId: string, newTitle: string) => void;
+  addBoard: () => void;
 }
 
 export interface TaskListProps {
