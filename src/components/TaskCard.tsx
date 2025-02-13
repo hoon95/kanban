@@ -2,12 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleCheck,
-  faCheck,
-  faPen,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { useTaskStore } from "@/stores/useTaskStore";
 
 export default function TaskCard({
@@ -56,14 +52,17 @@ export default function TaskCard({
       {...listeners}
     >
       <div className="flex gap-3 items-center">
-        <FontAwesomeIcon icon={faCircleCheck} className="text-blue-500" />
+        <FontAwesomeIcon
+          icon={faCircle}
+          className="text-gray-500 cursor-pointer"
+          onPointerDown={(e) => e.stopPropagation()}
+        />
         {isEditing ? (
           <input
             className="focus:outline-red-500"
             type="text"
             value={todo.text}
             onChange={(e) => handleModifyTask(todo.id, e)}
-            onPointerDown={(e) => e.stopPropagation()}
             ref={inputRef}
             placeholder="할 일을 입력하세요"
           />

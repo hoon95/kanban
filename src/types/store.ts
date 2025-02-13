@@ -1,5 +1,10 @@
+export interface Board {
+  id: string;
+  title: string;
+}
+
 export interface BoardProps {
-  boards: string[];
+  boards: Board[];
   setBoardTitle: (boardId: string, newTitle: string) => void;
   addBoard: () => void;
 }
