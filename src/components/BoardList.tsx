@@ -6,10 +6,10 @@ import { useBoardStore } from "@/stores/useBoardStore";
 import Board from "@/components/Board";
 
 export default function BoardList() {
-  const { boards, addBoard } = useBoardStore();
+  const { boards, setBoard } = useBoardStore();
 
   const handleAddBoard = () => {
-    addBoard();
+    setBoard("add");
   };
 
   return (

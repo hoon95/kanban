@@ -6,7 +6,7 @@ export interface Board {
 export interface BoardProps {
   boards: Board[];
   setBoardTitle: (boardId: string, newTitle: string) => void;
-  addBoard: () => void;
+  setBoard: (action: "add" | "remove", boardId?: string) => void;
 }
 
 export interface TaskListProps {

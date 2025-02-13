@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,44 +8,63 @@ import { useTaskStore } from "@/stores/useTaskStore";
 
 export default function TaskCard({
   todo,
+  boardId,
 }: {
   todo: { id: string; text: string };
+  boardId: string;
 }) {
   const { tasks, setTasks } = useTaskStore();
   const [isEditing, setIsEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState(todo.text);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: todo.id });
 
-  const handleModifyClick = () => {
-    setIsEditing((prev) => !prev);
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleModifyClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (isEditing) {
+        const updatedTasks = tasks[boardId]?.map((task) =>
+          task.id === todo.id ? { ...task, text: inputValue } : task
+        );
+        setTasks({
+          boardId,
+          newTasks: updatedTasks || [],
+        });
+      }
+      setIsEditing((prev) => !prev);
+    },
+    [isEditing, tasks, boardId, inputValue, setTasks, todo.id]
+  );
 
   useEffect(() => {
-    if (isEditing) {
-      inputRef.current?.focus();
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
     }
   }, [isEditing]);
 
-  const handleModifyTask = (
-    boardId: string,
-    taskId: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const updatedTasks = tasks[boardId]?.map((task) =>
-      task.id === taskId ? { ...task, text: event.target.value } : task
-    );
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleModifyClick(e);
+      }
+    },
+    [handleModifyClick]
+  );
 
-    setTasks({
-      ...tasks,
-      [boardId]: updatedTasks || [],
-    });
-  };
-
-  const handleDeleteTask = (id: string) => {
-    setTasks(tasks.filter((task: { id: string }) => task.id !== id));
-  };
+  const handleDeleteTask = useCallback(
+    (id: string) => {
+      const deleteTask = tasks[boardId]?.filter((task) => task.id !== id);
+      setTasks({
+        boardId,
+        newTasks: deleteTask,
+      });
+    },
+    [tasks, boardId, setTasks]
+  );
 
   return (
     <div
@@ -63,11 +82,12 @@ export default function TaskCard({
         />
         {isEditing ? (
           <input
+            ref={inputRef}
             className="focus:outline-red-500"
             type="text"
-            value={todo.text}
-            onChange={(e) => handleModifyTask(todo.id, e)}
-            ref={inputRef}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="할 일을 입력하세요"
           />
         ) : (
