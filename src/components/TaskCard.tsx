@@ -1,21 +1,23 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+"use client";
+
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
-import { useTaskStore } from "@/stores/useTaskStore";
+import { useEditableTask } from "@/hooks/useEditableTask";
+import { TaskCardProps } from "@/types";
 
-export default function TaskCard({
-  todo,
-  boardId,
-}: {
-  todo: { id: string; text: string };
-  boardId: string;
-}) {
-  const { tasks, setTasks } = useTaskStore();
-  const [isEditing, setIsEditing] = useState(false);
-  const [inputValue, setInputValue] = useState(todo.text);
+export default function TaskCard({ todo, boardId }: TaskCardProps) {
+  const {
+    isEditing,
+    inputValue,
+    setInputValue,
+    inputRef,
+    handleModifyClick,
+    handleKeyDown,
+    handleDeleteTask,
+  } = useEditableTask(todo.id, boardId, todo.text);
 
   const {
     attributes,
@@ -28,52 +30,6 @@ export default function TaskCard({
     id: todo.id,
     data: { type: "Todo", todo, boardId },
   });
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleModifyClick = useCallback(
-    (e: React.MouseEvent | React.KeyboardEvent) => {
-      e.stopPropagation();
-      if (isEditing) {
-        const updatedTasks = tasks[boardId]?.map((task) =>
-          task.id === todo.id ? { ...task, text: inputValue } : task
-        );
-        setTasks({
-          boardId,
-          newTasks: updatedTasks || [],
-        });
-      }
-      setIsEditing((prev) => !prev);
-    },
-    [isEditing, tasks, boardId, inputValue, setTasks, todo.id]
-  );
-
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleModifyClick(e as React.KeyboardEvent);
-      }
-    },
-    [handleModifyClick]
-  );
-
-  const handleDeleteTask = useCallback(
-    (id: string) => {
-      const deleteTask = tasks[boardId]?.filter((task) => task.id !== id);
-      setTasks({
-        boardId,
-        newTasks: deleteTask,
-      });
-    },
-    [tasks, boardId, setTasks]
-  );
 
   if (isDragging) {
     return (
@@ -123,7 +79,7 @@ export default function TaskCard({
         <FontAwesomeIcon
           className="cursor-pointer hover:text-red-500"
           icon={faTrash}
-          onClick={() => handleDeleteTask(todo.id)}
+          onClick={handleDeleteTask}
           onPointerDown={(e) => e.stopPropagation()}
         />
       </div>

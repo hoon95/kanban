@@ -1,9 +1,10 @@
+// 보드 스토어 관련 타입
 export interface Board {
   id: string;
   title: string;
 }
 
-export interface BoardProps {
+export interface BoardStoreProps {
   boards: Board[];
   setBoard: (
     action: "add" | "remove" | "reorder",
@@ -12,14 +13,16 @@ export interface BoardProps {
   ) => void;
   setBoardTitle: (boardId: string, newTitle: string) => void;
 }
-export interface TaskListProps {
+
+// 태스크 스토어 관련 타입
+export interface TaskListItem {
   id: string;
   text: string;
 }
 
-export interface TaskProps {
+export interface TaskStoreProps {
   isTaskUpdated: boolean;
   setIsTaskUpdated: (updated: boolean) => void;
-  tasks: { [key: string]: TaskListProps[] };
-  setTasks: (params: { boardId: string; newTasks: TaskListProps[] }) => void;
+  tasks: { [key: string]: TaskListItem[] };
+  setTasks: (params: { boardId: string; newTasks: TaskListItem[] }) => void;
 }

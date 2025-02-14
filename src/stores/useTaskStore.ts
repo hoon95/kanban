@@ -1,28 +1,26 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
-import { TaskProps, TaskListProps } from "@/types/store";
+import { TaskStoreProps } from "@/types/store";
 
-export const useTaskStore = create<TaskProps>(
+export const useTaskStore = create<TaskStoreProps>(
   persist(
     (set) => ({
       isTaskUpdated: false as boolean,
       setIsTaskUpdated: (updated: boolean) => set({ isTaskUpdated: updated }),
-      tasks: {},
+      tasks: {} as Record<string, TaskListItem[]>,
       setTasks: ({
         boardId,
         newTasks,
       }: {
         boardId: string;
-        newTasks: TaskListProps[];
+        newTasks: TaskListItem[];
       }) =>
-        set((state) => {
-          return {
-            tasks: {
-              ...state.tasks,
-              [boardId]: newTasks,
-            },
-          };
-        }),
+        set((state) => ({
+          tasks: {
+            ...state.tasks,
+            [boardId]: newTasks,
+          },
+        })),
     }),
     {
       name: "taskStorage",

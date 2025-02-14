@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,12 +10,27 @@ import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { BoardComponentProps } from "@/types";
 
-export default function Board({ boardId }: { boardId: string }) {
+function getBoardBackground(boardId: string): string {
+  switch (boardId) {
+    case "todo":
+      return "bg-blue-500";
+    case "inProgress":
+      return "bg-yellow-500";
+    case "done":
+      return "bg-green-500";
+    default:
+      return "bg-gray-100";
+  }
+}
+
+export default function Board({ boardId }: BoardComponentProps) {
   const { boards, setBoardTitle, setBoard } = useBoardStore();
   const { tasks, setTasks } = useTaskStore();
 
-  const board = boards.find((board) => board.id === boardId);
+  const board = boards.find((b) => b.id === boardId);
+  const boardTasks = tasks[boardId] || [];
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -24,21 +40,22 @@ export default function Board({ boardId }: { boardId: string }) {
 
   if (!board) return null;
 
-  const boardTasks = tasks[boardId] || [];
-
-  const handleAddTask = (boardId: string) => {
+  const handleAddTask = useCallback(() => {
     const newTask = { id: uuidv4(), text: "할 일" };
-    const updatedTasks = [...(tasks[boardId] || []), newTask];
+    const updatedTasks = [...boardTasks, newTask];
     setTasks({ boardId, newTasks: updatedTasks });
-  };
+  }, [boardTasks, boardId, setTasks]);
 
-  const handleChangeTitle = (boardId: string, newTitle: string) => {
-    setBoardTitle(boardId, newTitle);
-  };
+  const handleChangeTitle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setBoardTitle(boardId, e.target.value);
+    },
+    [boardId, setBoardTitle]
+  );
 
-  const handleDeleteBoard = (boardId: string) => {
+  const handleDeleteBoard = useCallback(() => {
     setBoard("remove", boardId);
-  };
+  }, [boardId, setBoard]);
 
   return (
     <div
@@ -46,15 +63,9 @@ export default function Board({ boardId }: { boardId: string }) {
       {...attributes}
       {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`${
-        boardId === "todo"
-          ? "bg-blue-500"
-          : boardId === "inProgress"
-          ? "bg-yellow-500"
-          : boardId === "done"
-          ? "bg-green-500"
-          : "bg-gray-100"
-      } rounded-md p-4 shadow-md h-[50vh] max-h-[60vh] cursor-grab active:cursor-grabbing`}
+      className={`${getBoardBackground(
+        boardId
+      )} rounded-md p-4 shadow-md h-[50vh] max-h-[60vh] cursor-grab active:cursor-grabbing`}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
@@ -62,7 +73,7 @@ export default function Board({ boardId }: { boardId: string }) {
             className="w-full p-2 bg-transparent focus:outline-none"
             type="text"
             value={board.title}
-            onChange={(e) => handleChangeTitle(board.id, e.target.value)}
+            onChange={handleChangeTitle}
             onPointerDown={(e) => e.stopPropagation()}
             placeholder="제목을 입력하세요"
           />
@@ -72,7 +83,7 @@ export default function Board({ boardId }: { boardId: string }) {
           boardId !== "done" && (
             <FontAwesomeIcon
               className="text-gray-500 text-xl cursor-pointer"
-              onClick={() => handleDeleteBoard(boardId)}
+              onClick={handleDeleteBoard}
               onPointerDown={(e) => e.stopPropagation()}
               icon={faTimes}
             />
@@ -89,7 +100,7 @@ export default function Board({ boardId }: { boardId: string }) {
 
         <button
           className="w-full mt-4 text-lg teritary-btn"
-          onClick={() => handleAddTask(boardId)}
+          onClick={handleAddTask}
           onPointerDown={(e) => e.stopPropagation()}
         >
           + 할 일 추가
