@@ -70,15 +70,24 @@ export default function Board({ boardId }: { boardId: string }) {
         transform: CSS.Transform.toString(transform),
         transition,
       }}
-      className="bg-gray-100 rounded-md p-4 shadow-md h-[50vh] max-h-[60vh] cursor-grab active:cursor-grabbing"
+      className={`${
+        boardId === "todo"
+          ? "bg-blue-500"
+          : boardId === "inProgress"
+          ? "bg-yellow-500"
+          : boardId === "done"
+          ? "bg-green-500"
+          : "bg-gray-100"
+      } rounded-md p-4 shadow-md h-[50vh] max-h-[60vh] cursor-grab active:cursor-grabbing`}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
           <input
-            className="w-full p-2 bg-gray-100 focus:outline-none"
+            className="w-full p-2 bg-transparent focus:outline-none"
             type="text"
             value={board.title}
             onChange={(e) => handleChangeTitle(board.id, e.target.value)}
+            onPointerDown={(e) => e.stopPropagation()}
             placeholder="제목을 입력하세요"
           />
         </div>

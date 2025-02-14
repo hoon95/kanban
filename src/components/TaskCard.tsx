@@ -83,7 +83,7 @@ export default function TaskCard({
         {isEditing ? (
           <input
             ref={inputRef}
-            className="focus:outline-red-500"
+            className="focus:outline-orange-300 w-5/6"
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
