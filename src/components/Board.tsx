@@ -4,14 +4,20 @@ import { useCallback } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faClipboardList,
+  faHourglassHalf,
+  faTasks,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import TaskCard from "@/components/TaskCard";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { BoardComponentProps } from "@/types";
-import { getBoardBackground } from "@/utils/getBoardBackground";
+import getBoardBackground from "@/utils/getBoardBackground";
 
 export default function Board({ boardId }: BoardComponentProps) {
   const { boards, setBoardTitle, setBoard } = useBoardStore();
@@ -51,14 +57,40 @@ export default function Board({ boardId }: BoardComponentProps) {
       {...attributes}
       {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`${getBoardBackground(
-        boardId
-      )} rounded-md p-4 shadow-md h-[50vh] max-h-[60vh] cursor-grab active:cursor-grabbing`}
+      className="bg-gray-100 border-[1px] border-gray-200 rounded-md p-4 shadow-md h-[40vh] max-h-[40vh] cursor-grab active:cursor-grabbing relative"
     >
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-1">
+      <div className="flex justify-center items-center h-[10%]">
+        <div
+          className={`${getBoardBackground(
+            boardId
+          )} flex items-center gap-1 w-full pl-3 absolute left-0 top-0 rounded-t-md`}
+        >
+          <FontAwesomeIcon
+            className={`${
+              boardId === "todo" ||
+              boardId === "inProgress" ||
+              boardId === "done"
+                ? "text-white"
+                : ""
+            }`}
+            icon={
+              boardId === "todo"
+                ? faClipboardList
+                : boardId === "inProgress"
+                ? faHourglassHalf
+                : boardId === "done"
+                ? faCheckCircle
+                : faTasks
+            }
+          />
           <input
-            className="w-full p-2 bg-transparent focus:outline-none"
+            className={`${
+              boardId === "todo" ||
+              boardId === "inProgress" ||
+              boardId === "done"
+                ? "text-white"
+                : ""
+            } w-full p-2 bg-transparent focus:outline-none placeholder-transparent`}
             type="text"
             value={board.title}
             onChange={handleChangeTitle}
@@ -70,7 +102,7 @@ export default function Board({ boardId }: BoardComponentProps) {
           boardId !== "inProgress" &&
           boardId !== "done" && (
             <FontAwesomeIcon
-              className="text-gray-500 text-xl cursor-pointer"
+              className="text-gray-500 text-xl cursor-pointer absolute top-2 right-3"
               onClick={handleDeleteBoard}
               onPointerDown={(e) => e.stopPropagation()}
               icon={faTimes}

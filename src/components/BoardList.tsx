@@ -1,7 +1,11 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faArrowsAlt,
+  faGripLines,
+} from "@fortawesome/free-solid-svg-icons";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -64,7 +68,8 @@ export default function BoardList() {
       <DragOverlay>
         {activeItem ? (
           activeItem.data.current?.type === "Board" ? (
-            <div className="flex justify-center items-center w-full p-4 h-[50vh] max-h-[60vh] bg-gray-100 rounded-md shadow-lg">
+            <div className="flex flex-col gap-5 justify-center items-center w-full p-4 h-[40vh] max-h-[60vh] bg-gray-100 rounded-md shadow-lg">
+              <FontAwesomeIcon icon={faArrowsAlt} className="text-3xl" />
               <p className="text-xl">원하는 곳에 놓으세요!</p>
             </div>
           ) : activeItem.data.current?.type === "Todo" ? (

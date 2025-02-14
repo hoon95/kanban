@@ -1,4 +1,4 @@
-export function getBoardBackground(boardId: string): string {
+export default function getBoardBackground(boardId: string): string {
   switch (boardId) {
     case "todo":
       return "bg-blue-500";
