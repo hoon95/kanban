@@ -6,7 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 export const useBoardStore = create<BoardProps>(
   persist(
     (set) => ({
-      boards: [] as Board[],
+      boards: [
+        { id: "todo", title: "To-Do" },
+        { id: "inProgress", title: "In Progress" },
+        { id: "done", title: "Done" },
+      ] as Board[],
       setBoard: (
         action: "add" | "remove" | "reorder",
         boardId?: string,

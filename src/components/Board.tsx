@@ -4,7 +4,7 @@ import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripVertical, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import TaskCard from "@/components/TaskCard";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
@@ -51,8 +51,6 @@ export default function Board({ boardId }: { boardId: string }) {
     const updatedTasks = [...(tasks[boardId] || []), newTask];
 
     setTasks({ boardId, newTasks: updatedTasks });
-
-    console.log(updatedTasks);
   };
 
   const handleChangeTitle = (boardId: string, newTitle: string) => {
@@ -76,10 +74,6 @@ export default function Board({ boardId }: { boardId: string }) {
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
-          <FontAwesomeIcon
-            className="text-gray-500 cursor-grab"
-            icon={faGripVertical}
-          />
           <input
             className="w-full p-2 bg-gray-100 focus:outline-none"
             type="text"
@@ -88,11 +82,18 @@ export default function Board({ boardId }: { boardId: string }) {
             placeholder="제목을 입력하세요"
           />
         </div>
-        <FontAwesomeIcon
-          className="text-gray-500 text-xl cursor-pointer"
-          onClick={() => handleDeleteBoard(boardId)}
-          icon={faTimes}
-        />
+        {boardId !== "todo" &&
+        boardId !== "inProgress" &&
+        boardId !== "done" ? (
+          <FontAwesomeIcon
+            className="text-gray-500 text-xl cursor-pointer"
+            onClick={() => handleDeleteBoard(boardId)}
+            onPointerDown={(e) => e.stopPropagation()}
+            icon={faTimes}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div className="h-5/6 overflow-y-scroll">
         <DndContext
