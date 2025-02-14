@@ -64,8 +64,8 @@ export default function BoardList() {
       <DragOverlay>
         {activeItem ? (
           activeItem.data.current?.type === "Board" ? (
-            <div className="flex justify-center items-center w-full p-4 bg-gray-300 h-[50vh] rounded-md shadow-lg">
-              <p>이동 중입니다</p>
+            <div className="flex justify-center items-center w-full p-4 h-[50vh] max-h-[60vh] bg-gray-100 rounded-md shadow-lg">
+              <p className="text-xl">원하는 곳에 놓으세요!</p>
             </div>
           ) : activeItem.data.current?.type === "Todo" ? (
             <div className="w-full p-4 bg-white rounded-md shadow-lg">

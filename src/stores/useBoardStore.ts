@@ -1,4 +1,3 @@
-// stores/useBoardStore.ts
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import { Board, BoardStoreProps } from "@/types/store";

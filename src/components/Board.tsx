@@ -11,19 +11,7 @@ import { useTaskStore } from "@/stores/useTaskStore";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { BoardComponentProps } from "@/types";
-
-function getBoardBackground(boardId: string): string {
-  switch (boardId) {
-    case "todo":
-      return "bg-blue-500";
-    case "inProgress":
-      return "bg-yellow-500";
-    case "done":
-      return "bg-green-500";
-    default:
-      return "bg-gray-100";
-  }
-}
+import { getBoardBackground } from "@/utils/getBoardBackground";
 
 export default function Board({ boardId }: BoardComponentProps) {
   const { boards, setBoardTitle, setBoard } = useBoardStore();
@@ -89,7 +77,7 @@ export default function Board({ boardId }: BoardComponentProps) {
             />
           )}
       </div>
-      <div className="h-5/6 overflow-y-scroll">
+      <div className="h-5/6 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
         <SortableContext items={boardTasks.map((task) => task.id)}>
           <div className="mt-4 space-y-2">
             {boardTasks.map((task) => (

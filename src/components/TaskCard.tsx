@@ -4,7 +4,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { useEditableTask } from "@/hooks/useEditableTask";
 import { TaskCardProps } from "@/types";
 
@@ -50,11 +49,6 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
       {...listeners}
     >
       <div className="flex gap-3 items-center">
-        <FontAwesomeIcon
-          icon={faCircle}
-          className="text-gray-500 cursor-pointer"
-          onPointerDown={(e) => e.stopPropagation()}
-        />
         {isEditing ? (
           <input
             ref={inputRef}
