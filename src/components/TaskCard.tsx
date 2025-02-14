@@ -17,13 +17,22 @@ export default function TaskCard({
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(todo.text);
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: todo.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: todo.id,
+    data: { type: "Todo", todo, boardId },
+  });
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleModifyClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent | React.KeyboardEvent) => {
       e.stopPropagation();
       if (isEditing) {
         const updatedTasks = tasks[boardId]?.map((task) =>
@@ -49,7 +58,7 @@ export default function TaskCard({
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        handleModifyClick(e);
+        handleModifyClick(e as React.KeyboardEvent);
       }
     },
     [handleModifyClick]
@@ -65,6 +74,16 @@ export default function TaskCard({
     },
     [tasks, boardId, setTasks]
   );
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={{ transform: CSS.Transform.toString(transform), transition }}
+        className="opacity-50 w-full h-14 bg-gray-200 rounded-md"
+      />
+    );
+  }
 
   return (
     <div

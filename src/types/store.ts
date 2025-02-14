@@ -5,10 +5,13 @@ export interface Board {
 
 export interface BoardProps {
   boards: Board[];
+  setBoard: (
+    action: "add" | "remove" | "reorder",
+    boardId?: string,
+    targetId?: string
+  ) => void;
   setBoardTitle: (boardId: string, newTitle: string) => void;
-  setBoard: (action: "add" | "remove", boardId?: string) => void;
 }
-
 export interface TaskListProps {
   id: string;
   text: string;
