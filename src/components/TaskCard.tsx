@@ -59,7 +59,7 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="flex justify-between p-4 bg-white shadow-md rounded-md cursor-grab active:cursor-grabbing"
+        className="flex justify-between p-4 bg-white dark:bg-gray-500 dark:text-white shadow-md rounded-md cursor-grab active:cursor-grabbing"
       >
         <div className="flex gap-3 items-center">
           {isEditing ? (

@@ -47,7 +47,7 @@ export default function BoardList() {
         items={boards.map((board) => board.id)}
         strategy={horizontalListSortingStrategy}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-4 dark:bg-gray-800">
           {boards.map((board) => (
             <div
               key={board.id}
@@ -67,7 +67,7 @@ export default function BoardList() {
             transition={{ duration: 0.3 }}
           >
             <button
-              className="flex items-center justify-center flex-col gap-2 w-full text-lg rounded-lg border-2 bg-gray-100 border-gray-200 p-5 text-gray-500"
+              className="flex items-center justify-center flex-col gap-2 w-full text-lg rounded-lg border-2 dark:border-[1px] bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 p-5 text-gray-500 dark:text-white"
               onClick={handleAddBoard}
             >
               <FontAwesomeIcon icon={faPlus} />
@@ -85,8 +85,10 @@ export default function BoardList() {
               <p className="text-xl">원하는 곳에 놓으세요!</p>
             </div>
           ) : activeItem.data.current?.type === "Todo" ? (
-            <div className="w-full p-4 bg-white rounded-md shadow-lg">
-              <p>{activeItem.data.current.todo.text}</p>
+            <div className="w-full p-4 bg-white dark:bg-gray-500 rounded-md shadow-lg">
+              <p className="dark:text-white">
+                {activeItem.data.current.todo.text}
+              </p>
             </div>
           ) : null
         ) : null}

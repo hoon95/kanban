@@ -58,7 +58,7 @@ export default function Board({ boardId }: BoardComponentProps) {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="bg-gray-100 border-[1px] border-gray-200 rounded-md p-4 shadow-md h-[40vh] max-h-[40vh] cursor-grab active:cursor-grabbing relative"
+        className="bg-gray-100 dark:bg-gray-700 border-[1px] border-gray-200 dark:border-gray-600 rounded-md p-4 shadow-md h-[40vh] max-h-[40vh] cursor-grab active:cursor-grabbing relative"
       >
         <div className="flex justify-center items-center h-[10%]">
           <div
