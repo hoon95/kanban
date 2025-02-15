@@ -10,6 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { useEditableTask } from "@/hooks/useEditableTask";
 import { TaskCardProps } from "@/types";
+import { stopPropagation } from "@/utils/eventUtils";
 
 export default function TaskCard({ todo, boardId }: TaskCardProps) {
   const {
@@ -44,55 +45,58 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
     );
   }
   return (
-    <motion.div
+    <div
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className="flex justify-between p-4 bg-white shadow-md rounded-md cursor-grab active:cursor-grabbing"
       {...attributes}
       {...listeners}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
     >
-      <div className="flex gap-3 items-center">
-        {isEditing ? (
-          <input
-            ref={inputRef}
-            className="focus:outline-orange-300 w-5/6"
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onPointerDown={(e) => e.stopPropagation()}
-            placeholder="할 일을 입력하세요"
-          />
-        ) : (
-          <p>{todo.text}</p>
-        )}
-      </div>
-      <div className="flex gap-2">
-        <FontAwesomeIcon
-          className="cursor-pointer hover:text-blue-500"
-          icon={isEditing ? faCheck : faPen}
-          onClick={handleModifyClick}
-          onPointerDown={(e) => e.stopPropagation()}
-        />
-        {isEditing ? (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className="flex justify-between p-4 bg-white shadow-md rounded-md cursor-grab active:cursor-grabbing"
+      >
+        <div className="flex gap-3 items-center">
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              className="focus:outline-orange-300 w-5/6"
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onPointerDown={stopPropagation}
+              placeholder="할 일을 입력하세요"
+            />
+          ) : (
+            <p>{todo.text}</p>
+          )}
+        </div>
+        <div className="flex gap-2">
           <FontAwesomeIcon
-            className="cursor-pointer hover:text-red-500"
-            icon={faTimes}
-            onClick={handleDeleteTask}
-            onPointerDown={(e) => e.stopPropagation()}
+            className="cursor-pointer hover:text-blue-500"
+            icon={isEditing ? faCheck : faPen}
+            onClick={handleModifyClick}
+            onPointerDown={stopPropagation}
           />
-        ) : (
-          <FontAwesomeIcon
-            className="cursor-pointer hover:text-red-500"
-            icon={faTrash}
-            onClick={handleDeleteTask}
-            onPointerDown={(e) => e.stopPropagation()}
-          />
-        )}
-      </div>
-    </motion.div>
+          {isEditing ? (
+            <FontAwesomeIcon
+              className="cursor-pointer hover:text-red-500"
+              icon={faTimes}
+              onClick={handleDeleteTask}
+              onPointerDown={stopPropagation}
+            />
+          ) : (
+            <FontAwesomeIcon
+              className="cursor-pointer hover:text-red-500"
+              icon={faTrash}
+              onClick={handleDeleteTask}
+              onPointerDown={stopPropagation}
+            />
+          )}
+        </div>
+      </motion.div>
+    </div>
   );
 }
