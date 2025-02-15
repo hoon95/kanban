@@ -21,6 +21,6 @@ export interface TaskListItem {
 export interface TaskStoreProps {
   isTaskUpdated: boolean;
   setIsTaskUpdated: (updated: boolean) => void;
-  tasks: { [key: string]: TaskListItem[] };
+  tasks: Record<string, TaskListItem[]>;
   setTasks: (params: { boardId: string; newTasks: TaskListItem[] }) => void;
 }

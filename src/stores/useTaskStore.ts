@@ -1,6 +1,6 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
-import { TaskStoreProps } from "@/types/store";
+import { TaskListItem, TaskStoreProps } from "@/types/store";
 
 export const useTaskStore = create<TaskStoreProps>(
   persist(
