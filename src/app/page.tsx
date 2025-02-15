@@ -1,5 +1,11 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
-import BoardList from "@/components/BoardList";
+
+const BoardList = dynamic(() => import("@/components/BoardList"), {
+  ssr: false,
+});
 
 export default function Page() {
   return (

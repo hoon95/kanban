@@ -1,12 +1,17 @@
-"use client";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faArrowsAlt } from "@fortawesome/free-solid-svg-icons";
-import { DndContext, DragOverlay } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { motion } from "framer-motion";
 import Board from "@/components/Board";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useDragAndDropHandlers } from "@/hooks/useDragAndDropHandlers";
@@ -25,8 +30,15 @@ export default function BoardList() {
     setBoard("add");
   };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 10 },
+    })
+  );
+
   return (
     <DndContext
+      sensors={sensors}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
@@ -49,7 +61,11 @@ export default function BoardList() {
               <Board boardId={board.id} dropPreview={dropPreview} />
             </div>
           ))}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             <button
               className="flex items-center justify-center flex-col gap-2 w-full text-lg rounded-lg border-2 bg-gray-100 border-gray-200 p-5 text-gray-500"
               onClick={handleAddBoard}
@@ -57,7 +73,7 @@ export default function BoardList() {
               <FontAwesomeIcon icon={faPlus} />
               <p>보드 추가하기</p>
             </button>
-          </div>
+          </motion.div>
         </div>
       </SortableContext>
 

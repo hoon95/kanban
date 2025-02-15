@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useMemo } from "react";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -68,41 +66,45 @@ export default function Board({ boardId }: BoardComponentProps) {
         <div
           className={`${getBoardBackground(
             boardId
-          )} flex items-center gap-1 w-full pl-3 absolute left-0 top-0 rounded-t-md`}
+          )} flex justify-between items-center w-full pl-3 absolute left-0 top-0 rounded-t-md`}
         >
-          <FontAwesomeIcon
-            className={"text-white"}
-            icon={
-              boardId === "todo"
-                ? faClipboardList
-                : boardId === "inProgress"
-                ? faHourglassHalf
-                : boardId === "done"
-                ? faCheckCircle
-                : faTasks
-            }
-          />
-          <input
-            className={
-              "text-white w-3/6 p-2 bg-transparent focus:outline-none placeholder-transparent"
-            }
-            type="text"
-            value={board.title}
-            onChange={handleChangeTitle}
-            onPointerDown={(e) => e.stopPropagation()}
-            placeholder="제목을 입력하세요"
-          />
-        </div>
-        {boardId !== "todo" &&
-          boardId !== "inProgress" &&
-          boardId !== "done" && (
+          <div className="flex items-center">
             <FontAwesomeIcon
-              className="text-white hover:text-red-500 text-xl cursor-pointer absolute top-2 right-3"
-              onClick={handleDeleteBoard}
-              onPointerDown={(e) => e.stopPropagation()}
-              icon={faTimes}
+              className={"text-white"}
+              icon={
+                boardId === "todo"
+                  ? faClipboardList
+                  : boardId === "inProgress"
+                  ? faHourglassHalf
+                  : boardId === "done"
+                  ? faCheckCircle
+                  : faTasks
+              }
             />
-          )}
+            <input
+              className={
+                "text-white w-3/6 p-2 bg-transparent focus:outline-none placeholder-transparent"
+              }
+              type="text"
+              value={board.title}
+              onChange={handleChangeTitle}
+              onPointerDown={(e) => e.stopPropagation()}
+              placeholder="제목을 입력하세요"
+            />
+          </div>
+          <div className="flex items-center gap-3 pr-3">
+            {boardId !== "todo" &&
+              boardId !== "inProgress" &&
+              boardId !== "done" && (
+                <FontAwesomeIcon
+                  className="text-white hover:text-red-500 text-xl cursor-pointer"
+                  onClick={handleDeleteBoard}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  icon={faTimes}
+                />
+              )}
+          </div>
+        </div>
       </div>
       <div className="h-5/6 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
         <SortableContext items={boardTasks.map((task) => task.id)}>
