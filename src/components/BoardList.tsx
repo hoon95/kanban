@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faArrowsAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
   DndContext,
   PointerSensor,
@@ -13,6 +13,7 @@ import {
 } from "@dnd-kit/sortable";
 import { motion } from "framer-motion";
 import Board from "@/components/Board";
+import TaskCard from "@/components/TaskCard";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useDragAndDropHandlers } from "@/hooks/useDragAndDropHandlers";
 
@@ -80,16 +81,15 @@ export default function BoardList() {
       <DragOverlay>
         {activeItem ? (
           activeItem.data.current?.type === "Board" ? (
-            <div className="flex flex-col gap-5 justify-center items-center w-full p-4 h-[40vh] max-h-[60vh] bg-gray-100 rounded-md shadow-lg">
-              <FontAwesomeIcon icon={faArrowsAlt} className="text-3xl" />
-              <p className="text-xl">원하는 곳에 놓으세요!</p>
-            </div>
+            <Board
+              boardId={activeItem.id.toString()}
+              dropPreview={dropPreview}
+            />
           ) : activeItem.data.current?.type === "Todo" ? (
-            <div className="w-full p-4 bg-white dark:bg-gray-500 rounded-md shadow-lg">
-              <p className="dark:text-white">
-                {activeItem.data.current.todo.text}
-              </p>
-            </div>
+            <TaskCard
+              todo={activeItem.data.current.todo}
+              boardId={activeItem.data.current.boardId}
+            />
           ) : null
         ) : null}
       </DragOverlay>
