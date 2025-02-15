@@ -12,6 +12,7 @@ import { BoardComponentProps } from "@/types";
 import getBoardBackground from "@/utils/getBoardBackground";
 import { stopPropagation } from "@/utils/eventUtils";
 import { getBoardIcon } from "@/utils/iconUtils";
+import { useDroppable } from "@dnd-kit/core";
 
 export default function Board({ boardId }: BoardComponentProps) {
   const { boards, setBoardTitle, setBoard } = useBoardStore();
@@ -27,6 +28,11 @@ export default function Board({ boardId }: BoardComponentProps) {
       id: boardId,
       data: { type: "Board", board: defaultBoard, boardId },
     });
+
+  const { setNodeRef: setDropRef } = useDroppable({
+    id: `drop-${boardId}`,
+    data: { type: "Todo", boardId },
+  });
 
   const handleAddTask = useCallback(() => {
     const newTask = { id: uuidv4(), text: "", isFavorite: false };
@@ -96,10 +102,20 @@ export default function Board({ boardId }: BoardComponentProps) {
         </div>
         <div className="h-5/6 overflow-y-scroll [&::-webkit-scrollbar]:hidden">
           <SortableContext items={boardTasks.map((task) => task.id)}>
-            <div className="mt-4 space-y-2">
-              {boardTasks.map((task) => (
-                <TaskCard key={task.id} todo={task} boardId={boardId} />
-              ))}
+            <div className="mt-4 space-y-2" ref={setDropRef}>
+              {boardTasks.length === 0 ? (
+                <div className="min-h-[50px] border-2 border-dashed border-gray-300 flex items-center justify-center">
+                  <p className="text-gray-500 dark:text-white">
+                    할 일을 추가해보세요
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {boardTasks.map((task) => (
+                    <TaskCard key={task.id} todo={task} boardId={boardId} />
+                  ))}
+                </div>
+              )}
             </div>
           </SortableContext>
           <button
