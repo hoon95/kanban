@@ -35,7 +35,7 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
       <div
         ref={setNodeRef}
         style={{ transform: CSS.Transform.toString(transform), transition }}
-        className="opacity-50 w-full h-14 bg-gray-200 rounded-md"
+        className="w-full h-14"
       />
     );
   }

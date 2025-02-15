@@ -1,12 +1,12 @@
 export default function getBoardBackground(boardId: string): string {
   switch (boardId) {
     case "todo":
-      return "bg-blue-500";
+      return "bg-orange-500";
     case "inProgress":
       return "bg-yellow-500";
     case "done":
       return "bg-green-500";
     default:
-      return "bg-gray-100";
+      return "bg-blue-600";
   }
 }

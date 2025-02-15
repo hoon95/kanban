@@ -24,6 +24,8 @@ export default function Board({ boardId }: BoardComponentProps) {
   const { tasks, setTasks } = useTaskStore();
 
   const board = boards.find((b) => b.id === boardId);
+  if (!board) return null;
+
   const boardTasks = tasks[boardId] || [];
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -31,8 +33,6 @@ export default function Board({ boardId }: BoardComponentProps) {
       id: boardId,
       data: { type: "Board", board, boardId },
     });
-
-  if (!board) return null;
 
   const handleAddTask = useCallback(() => {
     const newTask = { id: uuidv4(), text: "할 일" };
@@ -66,13 +66,7 @@ export default function Board({ boardId }: BoardComponentProps) {
           )} flex items-center gap-1 w-full pl-3 absolute left-0 top-0 rounded-t-md`}
         >
           <FontAwesomeIcon
-            className={`${
-              boardId === "todo" ||
-              boardId === "inProgress" ||
-              boardId === "done"
-                ? "text-white"
-                : ""
-            }`}
+            className={"text-white"}
             icon={
               boardId === "todo"
                 ? faClipboardList
@@ -84,13 +78,9 @@ export default function Board({ boardId }: BoardComponentProps) {
             }
           />
           <input
-            className={`${
-              boardId === "todo" ||
-              boardId === "inProgress" ||
-              boardId === "done"
-                ? "text-white"
-                : ""
-            } w-full p-2 bg-transparent focus:outline-none placeholder-transparent`}
+            className={
+              "text-white w-full p-2 bg-transparent focus:outline-none placeholder-transparent"
+            }
             type="text"
             value={board.title}
             onChange={handleChangeTitle}
@@ -102,7 +92,7 @@ export default function Board({ boardId }: BoardComponentProps) {
           boardId !== "inProgress" &&
           boardId !== "done" && (
             <FontAwesomeIcon
-              className="text-gray-500 text-xl cursor-pointer absolute top-2 right-3"
+              className="text-white hover:text-red-500 text-xl cursor-pointer absolute top-2 right-3"
               onClick={handleDeleteBoard}
               onPointerDown={(e) => e.stopPropagation()}
               icon={faTimes}

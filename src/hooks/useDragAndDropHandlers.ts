@@ -1,5 +1,10 @@
 import { useCallback, useState } from "react";
-import { DragStartEvent, DragEndEvent, DragOverEvent } from "@dnd-kit/core";
+import {
+  Active,
+  DragStartEvent,
+  DragEndEvent,
+  DragOverEvent,
+} from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
@@ -12,7 +17,7 @@ export function useDragAndDropHandlers() {
     boardId: string;
     index: number;
   } | null>(null);
-  const [activeItem, setActiveItem] = useState<any>(null);
+  const [activeItem, setActiveItem] = useState<Active | null>(null);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveItem(event.active);
@@ -99,15 +104,19 @@ export function useDragAndDropHandlers() {
       const overType = over.data.current?.type;
 
       if (activeType === "Board" && overType === "Board") {
-        handleBoardReorder(active.id, over.id);
+        handleBoardReorder(String(active.id), String(over.id));
       } else if (activeType === "Todo" && overType === "Todo") {
-        const sourceBoardId = active.data.current.boardId;
-        const targetBoardId = over.data.current.boardId;
+        const sourceBoardId = active.data.current?.boardId;
+        const targetBoardId = over.data.current?.boardId;
         if (sourceBoardId && targetBoardId) {
           if (sourceBoardId === targetBoardId) {
-            handleTodoReorder(sourceBoardId, active.id, over.id);
+            handleTodoReorder(
+              sourceBoardId,
+              active.id.toString(),
+              String(over.id)
+            );
           } else {
-            handleTodoMove(sourceBoardId, targetBoardId, active.id);
+            handleTodoMove(sourceBoardId, targetBoardId, String(active.id));
           }
         }
       }

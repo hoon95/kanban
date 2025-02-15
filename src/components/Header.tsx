@@ -2,8 +2,12 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="flex justify-center bg-blue-600 p-3 text-white">
+    <header className="flex items-center gap-5 pl-5 py-3 border-gray-200 border-b-[1px]">
       <Image src="/img/logo.png" width={100} height={100} alt={"logo"} />
+      <div className="flex-col">
+        <h3 className="text-2xl font-bold">칸반 보드</h3>
+        <p className="text-sm">글로벌널리지 실무 과제 - 김다훈</p>
+      </div>
     </header>
   );
 }
