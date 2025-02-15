@@ -1,11 +1,7 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faArrowsAlt,
-  faGripLines,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faArrowsAlt } from "@fortawesome/free-solid-svg-icons";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import {
   SortableContext,

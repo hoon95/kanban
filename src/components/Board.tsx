@@ -1,8 +1,10 @@
 "use client";
 
-import { useCallback } from "react";
-import { SortableContext } from "@dnd-kit/sortable";
+import { useCallback, useMemo } from "react";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuidv4 } from "uuid";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -14,8 +16,6 @@ import {
 import TaskCard from "@/components/TaskCard";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useTaskStore } from "@/stores/useTaskStore";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { BoardComponentProps } from "@/types";
 import getBoardBackground from "@/utils/getBoardBackground";
 
@@ -24,18 +24,18 @@ export default function Board({ boardId }: BoardComponentProps) {
   const { tasks, setTasks } = useTaskStore();
 
   const board = boards.find((b) => b.id === boardId);
-  if (!board) return null;
+  const defaultBoard = board || { id: boardId, title: "" };
 
-  const boardTasks = tasks[boardId] || [];
+  const boardTasks = useMemo(() => tasks[boardId] || [], [tasks, boardId]);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: boardId,
-      data: { type: "Board", board, boardId },
+      data: { type: "Board", board: defaultBoard, boardId },
     });
 
   const handleAddTask = useCallback(() => {
-    const newTask = { id: uuidv4(), text: "할 일" };
+    const newTask = { id: uuidv4(), text: "" };
     const updatedTasks = [...boardTasks, newTask];
     setTasks({ boardId, newTasks: updatedTasks });
   }, [boardTasks, boardId, setTasks]);
@@ -51,12 +51,17 @@ export default function Board({ boardId }: BoardComponentProps) {
     setBoard("remove", boardId);
   }, [boardId, setBoard]);
 
+  if (!board) return null;
+
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       style={{ transform: CSS.Transform.toString(transform), transition }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
       className="bg-gray-100 border-[1px] border-gray-200 rounded-md p-4 shadow-md h-[40vh] max-h-[40vh] cursor-grab active:cursor-grabbing relative"
     >
       <div className="flex justify-center items-center h-[10%]">
@@ -79,7 +84,7 @@ export default function Board({ boardId }: BoardComponentProps) {
           />
           <input
             className={
-              "text-white w-full p-2 bg-transparent focus:outline-none placeholder-transparent"
+              "text-white w-3/6 p-2 bg-transparent focus:outline-none placeholder-transparent"
             }
             type="text"
             value={board.title}
@@ -116,6 +121,6 @@ export default function Board({ boardId }: BoardComponentProps) {
           + 할 일 추가
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

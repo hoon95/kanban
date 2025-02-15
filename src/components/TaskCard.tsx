@@ -3,7 +3,13 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faPen,
+  faTrash,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 import { useEditableTask } from "@/hooks/useEditableTask";
 import { TaskCardProps } from "@/types";
 
@@ -39,11 +45,13 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
       />
     );
   }
-
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
       className="flex justify-between p-4 bg-white shadow-md rounded-md cursor-grab active:cursor-grabbing"
       {...attributes}
       {...listeners}
@@ -57,6 +65,7 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
+            onPointerDown={(e) => e.stopPropagation()}
             placeholder="할 일을 입력하세요"
           />
         ) : (
@@ -70,13 +79,22 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
           onClick={handleModifyClick}
           onPointerDown={(e) => e.stopPropagation()}
         />
-        <FontAwesomeIcon
-          className="cursor-pointer hover:text-red-500"
-          icon={faTrash}
-          onClick={handleDeleteTask}
-          onPointerDown={(e) => e.stopPropagation()}
-        />
+        {isEditing ? (
+          <FontAwesomeIcon
+            className="cursor-pointer hover:text-red-500"
+            icon={faTimes}
+            onClick={handleDeleteTask}
+            onPointerDown={(e) => e.stopPropagation()}
+          />
+        ) : (
+          <FontAwesomeIcon
+            className="cursor-pointer hover:text-red-500"
+            icon={faTrash}
+            onClick={handleDeleteTask}
+            onPointerDown={(e) => e.stopPropagation()}
+          />
+        )}
       </div>
-    </div>
+    </motion.div>
   );
 }
