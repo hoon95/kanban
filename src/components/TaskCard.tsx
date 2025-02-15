@@ -6,7 +6,9 @@ import {
   faPen,
   faTrash,
   faTimes,
+  faStar as solidStar,
 } from "@fortawesome/free-solid-svg-icons";
+import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { motion } from "framer-motion";
 import { useEditableTask } from "@/hooks/useEditableTask";
 import { TaskCardProps } from "@/types";
@@ -19,8 +21,10 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
     setInputValue,
     inputRef,
     handleModifyClick,
+    handleModifyCancel,
     handleKeyDown,
     handleDeleteTask,
+    handleToggleFavorite,
   } = useEditableTask(todo.id, boardId, todo.text);
 
   const {
@@ -75,6 +79,14 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
         </div>
         <div className="flex gap-2">
           <FontAwesomeIcon
+            className={`${
+              todo.isFavorite ? "text-yellow-500" : ""
+            } cursor-pointer hover:text-yellow-500`}
+            icon={todo.isFavorite ? solidStar : regularStar}
+            onClick={handleToggleFavorite}
+            onPointerDown={stopPropagation}
+          />
+          <FontAwesomeIcon
             className="cursor-pointer hover:text-blue-500"
             icon={isEditing ? faCheck : faPen}
             onClick={handleModifyClick}
@@ -84,7 +96,7 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
             <FontAwesomeIcon
               className="cursor-pointer hover:text-red-500"
               icon={faTimes}
-              onClick={handleDeleteTask}
+              onClick={handleModifyCancel}
               onPointerDown={stopPropagation}
             />
           ) : (

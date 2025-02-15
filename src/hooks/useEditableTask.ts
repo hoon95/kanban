@@ -25,6 +25,10 @@ export function useEditableTask(
     [isEditing, tasks, boardId, inputValue, setTasks, todoId]
   );
 
+  const handleModifyCancel = useCallback(() => {
+    setIsEditing((prev) => !prev);
+  }, [isEditing]);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter") {
@@ -40,6 +44,18 @@ export function useEditableTask(
     setTasks({ boardId, newTasks: updatedTasks || [] });
   }, [tasks, boardId, setTasks, todoId]);
 
+  const handleToggleFavorite = useCallback(() => {
+    const boardTasks = tasks[boardId] || [];
+    const updatedTasks = boardTasks.map((task) =>
+      task.id === todoId ? { ...task, isFavorite: !task.isFavorite } : task
+    );
+    updatedTasks.sort((a, b) => {
+      if (a.isFavorite === b.isFavorite) return 0;
+      return a.isFavorite ? -1 : 1;
+    });
+    setTasks({ boardId, newTasks: updatedTasks });
+  }, [boardId, todoId, tasks, setTasks]);
+
   useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
@@ -52,7 +68,9 @@ export function useEditableTask(
     setInputValue,
     inputRef,
     handleModifyClick,
+    handleModifyCancel,
     handleKeyDown,
     handleDeleteTask,
+    handleToggleFavorite,
   };
 }

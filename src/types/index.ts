@@ -11,6 +11,7 @@ export interface BoardComponentProps {
 export interface Task {
   id: string;
   text: string;
+  isFavorite: boolean;
 }
 
 export interface TaskCardProps {

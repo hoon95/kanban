@@ -16,6 +16,7 @@ export interface BoardStoreProps {
 export interface TaskListItem {
   id: string;
   text: string;
+  isFavorite: boolean;
 }
 
 export interface TaskStoreProps {

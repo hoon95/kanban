@@ -29,7 +29,7 @@ export default function Board({ boardId }: BoardComponentProps) {
     });
 
   const handleAddTask = useCallback(() => {
-    const newTask = { id: uuidv4(), text: "" };
+    const newTask = { id: uuidv4(), text: "", isFavorite: false };
     const updatedTasks = [...boardTasks, newTask];
     setTasks({ boardId, newTasks: updatedTasks });
   }, [boardTasks, boardId, setTasks]);
