@@ -65,7 +65,7 @@ export default function TaskCard({ todo, boardId }: TaskCardProps) {
           {isEditing ? (
             <input
               ref={inputRef}
-              className="focus:outline-orange-300 w-5/6"
+              className="focus:outline-orange-300 w-5/6 bg-transparent "
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
