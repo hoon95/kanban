@@ -6,7 +6,7 @@
 
 - 이 프로젝트는 글로벌널리지 실무 과제로 진행되었으며, 칸반 보드 형식으로 보드와 태스크를 생성, 수정, 삭제, 순서 변경할 수 있습니다.
 
-## 구현 의도
+## 👀 구현 의도
 
 - 업무 효율의 증진을 위해 다양한 기능보다 본질적인 기능에 초점을 맞추어, <br />
   심플하고 직관적인 UI로 사용의 편리성을 높였습니다.
@@ -97,7 +97,6 @@ npm run start
 </p>
 <p align="center">
   <img src="/public/img/Browser/3.png" alt="주요 기능3" width="45%" />
-  <img src="/public/img/Browser/4.png" alt="주요 기능4" width="45%" />
 </p>
 
 ### 2. 일정 관리
@@ -109,10 +108,14 @@ npm run start
 - **_드래그 앤 드롭_** : 일정을 드래그하여 같은 보드 내에서 순서를 변경하거나, 다른 보드로 이동할 수 있습니다.
 
 <p align="center">
+  <img src="/public/img/Browser/4.png" alt="주요 기능4" width="45%" />
   <img src="/public/img/Browser/5.png" alt="주요 기능5" width="45%" />
-  <img src="/public/img/Browser/6.png" alt="주요 기능6" width="45%" />
 </p>
 
+<p align="center">
+  <img src="/public/img/Browser/6.png" alt="주요 기능6" width="45%" />
+</p>
+  
 ### 3. 다크 모드
 
 - 페이지 우측 상단 토글 스위치를 통해 라이트 모드와 다크 모드를 전환할 수 있습니다.
