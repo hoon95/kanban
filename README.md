@@ -1,7 +1,5 @@
 # 📚 칸반형 To-Do List 실무 과제
 
-🔗 배포 주소 : [https://kdh-to-do-page.vercel.app/](https://kdh-to-do-page.vercel.app/)
-
 업무 효율 증진을 위한 칸반형 To-Do List 애플리케이션입니다.
 
 - 이 프로젝트는 글로벌널리지 실무 과제로 진행되었으며, 칸반 보드 형식으로 보드와 태스크를 생성, 수정, 삭제, 순서 변경할 수 있습니다.
