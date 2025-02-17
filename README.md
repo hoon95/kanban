@@ -1,6 +1,6 @@
 # 📚 칸반형 To-Do List 실무 과제
 
-🔗 배포 주소 : [https://kdy-to-do-page.vercel.app/](https://kdy-to-do-page.vercel.app/)
+🔗 배포 주소 : [https://kdh-to-do-page.vercel.app/](https://kdh-to-do-page.vercel.app/)
 
 업무 효율 증진을 위한 칸반형 To-Do List 애플리케이션입니다.
 
