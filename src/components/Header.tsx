@@ -25,14 +25,14 @@ export default function Header() {
           height={50}
           alt="logo"
           priority={true}
-          className="w-auto"
+          // className="w-auto"
         />
         <div className="flex-col">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             칸반 보드
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-300">
-            글로벌널리지 실무 과제 - 김다훈
+            업무 효율 증진을 위한 To-Do List
           </p>
         </div>
       </div>
