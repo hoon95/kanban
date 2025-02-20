@@ -1,8 +1,8 @@
-# 📚 칸반형 To-Do List 실무 과제
+# 📚 칸반형 To-Do List
 
 업무 효율 증진을 위한 칸반형 To-Do List 애플리케이션입니다.
 
-- 이 프로젝트는 글로벌널리지 실무 과제로 진행되었으며, 칸반 보드 형식으로 보드와 태스크를 생성, 수정, 삭제, 순서 변경할 수 있습니다.
+- 보드와 태스크를 생성, 수정, 삭제, 순서 변경할 수 있습니다.
 
 ## 👀 구현 의도
 
@@ -23,15 +23,13 @@
 - dnd-kit : [npm trends - 드래그 라이브러리 비교](https://npmtrends.com/@dnd-kit/core-vs-react-beautiful-dnd-vs-react-dnd-vs-react-draggable)
 - framer-motion : 보드와 할 일을 추가할 때 부드러운 모션을 제공하여 사용성을 높였습니다.
 - Zustand : persist 미들웨어를 활용하여 store의 상태를 자동으로 localStorage와 동기화합니다. 상태 변화가 자동으로 컴포넌트에 반영되어 유용합니다.
-- 그 외 : [코딩허브](https://nginx.codinghub.co.kr/), [Flunti](https://flunti.io/) 홈페이지에서 공통 요소를 참조하여 스타일링 시 반영하였습니다.<br />
-  ex) FontAwesome 아이콘, 공통 색상, teritary-button(버튼 공용 스타일)
 
 ## 📂 폴더 구조
 
 프로젝트는 역할별로 아래와 같이 구성되어 있습니다.
 
 ```
-KDH_ToDoPage/
+kanban/
 ├─ app/
 │  ├─ components/
 │  │  ├─ Board.tsx             // 한 개의 보드를 보여줍니다 (보드 제목, 태스크 목록 등)
